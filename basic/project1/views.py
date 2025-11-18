@@ -110,16 +110,20 @@ def tool1(s):
 
 from bson import ObjectId
 
-def get_relationship():
+def get_relationship(flag=False):
     zd={}
     zd["code"]=200;zd["message"]="";zd["data"]={}
     db_mongo=Connect_Mongodb()
     dict_detail=db_mongo.get_collection("cds_dict_detail",{"status":1},{"_id":1,"field_name":1})
     dict_detail=dict(zip(dict_detail["_id"].values.tolist(),dict_detail["field_name"].values.tolist()))
     data_center=db_mongo.get_collection("cds_ci_att_value_data_center",{"status":1,"data_center_status":{"$ne":ObjectId("60f66712e61a21f5aafd564a")}},{"_id":1,"data_center_name":1,"code":1})
-    data_center_zd=dict(zip(data_center["_id"].values.tolist(),[i[0]+"|"+i[1] for i in data_center[["data_center_name","code"]].values.tolist()]))
     room=db_mongo.get_collection("cds_ci_att_value_room",{"status":1},{"_id":1,"room_name":1,"code":1})
-    room_zd=dict(zip(room["_id"].values.tolist(),[i[0]+"|"+i[1] for i in room[["room_name","code"]].values.tolist()]))
+    if flag:
+        data_center_zd=dict(zip(data_center["_id"].values.tolist(),[i[0]+"|"+i[1] for i in data_center[["data_center_name","code"]].values.tolist()]))
+        room_zd=dict(zip(room["_id"].values.tolist(),[i[0]+"|"+i[1] for i in room[["room_name","code"]].values.tolist()]))
+    else:
+        data_center_zd=dict(zip(data_center["_id"].values.tolist(),data_center["data_center_name"].values.tolist()))
+        room_zd=dict(zip(room["_id"].values.tolist(),room["room_name"].values.tolist()))
     relationship=db_mongo.get_collection("cds_ci_location_detail",{"status":1,"ci_name":"room"},{"data_center_id":1,"room_id":1})[["data_center_id","room_id"]].values.tolist()
     for i in relationship:
         if not data_center_zd.get(i[0],None):
@@ -234,5 +238,5 @@ def transform_format(zd,iter_):
 @api_view(['GET'])
 def get_info(request):
     zd={}
-    zd["code"]=200;zd["message"]="";zd["data"]=transform_format(get_relationship()["data"],0)
+    zd["code"]=200;zd["message"]="";zd["data"]=transform_format(get_relationship(True)["data"],0)
     return Response(zd)
