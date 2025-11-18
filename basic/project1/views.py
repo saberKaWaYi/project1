@@ -38,6 +38,18 @@ class Connect_Mongodb:
                 "PASSWORD":"cds-cloud@2017"
             }
         }
+        # self.config={
+        #     "connection":{
+        #         "TIMES":1000,
+        #         "TIME":0.1
+        #     },
+        #     "mongodb":{
+        #         "HOST":"localhost",
+        #         "PORT":4000,
+        #         "USERNAME":"manager",
+        #         "PASSWORD":"cds-cloud@2017"
+        #     }
+        # }
         self.client=self.login()
         self.db=self.get_database()
         atexit.register(self.close)
@@ -91,8 +103,7 @@ def test(request):
 
 from bson import ObjectId
 
-@api_view(['GET'])
-def get_info(request):
+def get_relationship():
     zd={}
     zd["code"]=200;zd["message"]="";zd["data"]={}
     db_mongo=Connect_Mongodb()
@@ -197,4 +208,19 @@ def get_info(request):
             continue
         if storage_zd[i[3]] not in zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]]:
             zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][storage_zd[i[3]]]={"type":"storage"}
+    return zd
+
+def transform_format(zd):
+    lt=[]
+    for i in zd:
+        if type(zd[i])==dict:
+            lt.append({"name":i,"children":transform_format(zd[i])})
+        else:
+            lt.append({"name":i,"type":zd[i]})
+    return lt
+
+@api_view(['GET'])
+def get_info(request):
+    zd={}
+    zd["code"]=200;zd["message"]="";zd["data"]=transform_format(get_relationship()["data"])
     return Response(zd)
