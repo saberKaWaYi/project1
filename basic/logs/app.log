@@ -76,3 +76,5 @@ Traceback (most recent call last):
 KeyError: '_'
 2025-11-18 15:08:25,438 - INFO - C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py changed, reloading.
 2025-11-18 15:08:43,659 - INFO - C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py changed, reloading.
+2025-11-18 15:51:53,040 - WARNING - Not Found: /api/get
+2025-11-18 15:52:01,565 - WARNING - Not Found: /api/get

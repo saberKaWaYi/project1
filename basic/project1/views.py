@@ -38,18 +38,6 @@ class Connect_Mongodb:
                 "PASSWORD":"cds-cloud@2017"
             }
         }
-        self.config={
-            "connection":{
-                "TIMES":3,
-                "TIME":0.1
-            },
-            "mongodb":{
-                "HOST":"localhost",
-                "PORT":4000,
-                "USERNAME":"manager",
-                "PASSWORD":"cds-cloud@2017"
-            }
-        }
         self.client=self.login()
         self.db=self.get_database()
         atexit.register(self.close)
@@ -134,4 +122,79 @@ def get_info(request):
             continue
         if rack_zd[i[2]] not in zd["data"][data_center_zd[i[0]]][room_zd[i[1]]]:
              zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]]={}
+    pipeline=[
+        {
+            '$match':{
+                'status':1,
+                'asset_status':{
+                    '$in':[
+                        ObjectId("5f964e31df0dfd65aaa716ec"),
+                        ObjectId("5fcef6de94103c791bc2a471"),
+                        ObjectId("5f964e424b328c52c8888d45"),
+                    ]
+                }
+            }
+        },
+        {
+            '$lookup':{
+                'from':'cds_ci_location_detail',
+                'localField':'_id',
+                'foreignField':'device_id',
+                'as':'location'
+            }
+        },
+        {
+            '$match':{
+                'location.status':1
+            }
+        },
+        {
+            '$project':{
+                "_id":1,
+                "hostname":1
+            }
+        }
+    ]
+    network=pd.DataFrame(list(db_mongo.db.cds_ci_att_value_network.aggregate(pipeline))).astype(str)
+    network_zd=dict(zip(network["_id"].values.tolist(),network["hostname"].values.tolist()))
+    relationship=db_mongo.get_collection("cds_ci_location_detail",{"status":1,"ci_name":"network"},{"data_center_id":1,"room_id":1,"rack_id":1,"device_id":1})[["data_center_id","room_id","rack_id","device_id"]].values.tolist()
+    for i in relationship:
+        if not data_center_zd.get(i[0],None):
+            continue
+        if not room_zd.get(i[1],None):
+            continue
+        if not rack_zd.get(i[2],None):
+            continue
+        if not network_zd.get(i[3],None):
+            continue
+        if network_zd[i[3]] not in zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]]:
+            zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][network_zd[i[3]]]={"type":"network"}
+    server=pd.DataFrame(list(db_mongo.db.cds_ci_att_value_server.aggregate(pipeline))).astype(str)
+    server_zd=dict(zip(server["_id"].values.tolist(),server["hostname"].values.tolist()))
+    relationship=db_mongo.get_collection("cds_ci_location_detail",{"status":1,"ci_name":"server"},{"data_center_id":1,"room_id":1,"rack_id":1,"device_id":1})[["data_center_id","room_id","rack_id","device_id"]].values.tolist()
+    for i in relationship:
+        if not data_center_zd.get(i[0],None):
+            continue
+        if not room_zd.get(i[1],None):
+            continue
+        if not rack_zd.get(i[2],None):
+            continue
+        if not server_zd.get(i[3],None):
+            continue
+        if server_zd[i[3]] not in zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]]:
+            zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][server_zd[i[3]]]={"type":"server"}
+    storage=pd.DataFrame(list(db_mongo.db.cds_ci_att_value_storage.aggregate(pipeline))).astype(str)
+    storage_zd=dict(zip(storage["_id"].values.tolist(),storage["hostname"].values.tolist()))
+    relationship=db_mongo.get_collection("cds_ci_location_detail",{"status":1,"ci_name":"storage"},{"data_center_id":1,"room_id":1,"rack_id":1,"device_id":1})[["data_center_id","room_id","rack_id","device_id"]].values.tolist()
+    for i in relationship:
+        if not data_center_zd.get(i[0],None):
+            continue
+        if not room_zd.get(i[1],None):
+            continue
+        if not rack_zd.get(i[2],None):
+            continue
+        if not storage_zd.get(i[3],None):
+            continue
+        if storage_zd[i[3]] not in zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]]:
+            zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][storage_zd[i[3]]]={"type":"storage"}
     return Response(zd)
