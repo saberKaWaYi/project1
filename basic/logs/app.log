@@ -1,0 +1,78 @@
+2025-11-18 14:29:11,380 - INFO - C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py changed, reloading.
+2025-11-18 14:31:10,487 - INFO - C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py changed, reloading.
+2025-11-18 15:05:08,077 - ERROR - Internal Server Error: /api/get_info
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'data_center_room'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py", line 112, in get_info
+    data_center_zd=dict(zip(data_center["_id"].values.tolist(),data_center["data_center_room"].values.tolist()))
+                                                               ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\pandas\core\frame.py", line 4113, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'data_center_room'
+2025-11-18 15:05:57,844 - INFO - C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py changed, reloading.
+2025-11-18 15:06:21,527 - INFO - C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py changed, reloading.
+2025-11-18 15:06:51,498 - INFO - C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py changed, reloading.
+2025-11-18 15:07:08,427 - INFO - C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py changed, reloading.
+2025-11-18 15:07:18,031 - INFO - C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py changed, reloading.
+2025-11-18 15:07:47,824 - INFO - C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py changed, reloading.
+2025-11-18 15:07:50,403 - ERROR - Internal Server Error: /api/get_info
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py", line 118, in get_info
+    if data_center_zd[i[0]] not in zd["data"]:
+       ~~~~~~~~~~~~~~^^^^^^
+KeyError: '_'
+2025-11-18 15:08:25,438 - INFO - C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py changed, reloading.
+2025-11-18 15:08:43,659 - INFO - C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py changed, reloading.
