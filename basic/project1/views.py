@@ -38,18 +38,18 @@ class Connect_Mongodb:
                 "PASSWORD":"cds-cloud@2017"
             }
         }
-        self.config={
-            "connection":{
-                "TIMES":1000,
-                "TIME":0.1
-            },
-            "mongodb":{
-                "HOST":"localhost",
-                "PORT":4000,
-                "USERNAME":"manager",
-                "PASSWORD":"cds-cloud@2017"
-            }
-        }
+        # self.config={
+        #     "connection":{
+        #         "TIMES":1000,
+        #         "TIME":0.1
+        #     },
+        #     "mongodb":{
+        #         "HOST":"localhost",
+        #         "PORT":4000,
+        #         "USERNAME":"manager",
+        #         "PASSWORD":"cds-cloud@2017"
+        #     }
+        # }
         self.client=self.login()
         self.db=self.get_database()
         atexit.register(self.close)
