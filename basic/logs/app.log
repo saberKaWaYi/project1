@@ -78,3 +78,357 @@ KeyError: '_'
 2025-11-18 15:08:43,659 - INFO - C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py changed, reloading.
 2025-11-18 15:51:53,040 - WARNING - Not Found: /api/get
 2025-11-18 15:52:01,565 - WARNING - Not Found: /api/get
+2025-11-18 18:09:56,781 - ERROR - Internal Server Error: /api/get_info
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py", line 235, in get_info
+    zd["code"]=200;zd["message"]="";zd["data"]=transform_format(get_relationship()["data"])
+                                                                ~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py", line 206, in get_relationship
+    zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][server_zd[i[3]][0]]={"type":"network","asset_status":dict_detail.get(network_zd[i[3]][1])}
+                                                                                                                                        ~~~~~~~~~~^^^^^^
+KeyError: '5ecd25a505f7f90868dd83ed'
+2025-11-18 18:10:46,017 - INFO - C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py changed, reloading.
+2025-11-18 18:10:53,804 - ERROR - Internal Server Error: /api/get_info
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py", line 235, in get_info
+    zd["code"]=200;zd["message"]="";zd["data"]=transform_format(get_relationship()["data"])
+                                                                ~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py", line 206, in get_relationship
+    zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][server_zd[i[3]][0]]={"type":"network","asset_status":dict_detail.get(network_zd[i[3]][1],None)}
+                                                                                                                                        ~~~~~~~~~~^^^^^^
+KeyError: '5ecd25a505f7f90868dd83ed'
+2025-11-18 18:45:34,181 - INFO - C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py changed, reloading.
+2025-11-18 18:45:40,585 - ERROR - Internal Server Error: /api/get_info
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py", line 237, in get_info
+    zd["code"]=200;zd["message"]="";zd["data"]=transform_format(get_relationship()["data"])
+                                                                ~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py", line 208, in get_relationship
+    zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][server_zd[i[3]][0]]={"type":"network","asset_status":dict_detail.get(network_zd[i[3]][1],None)}
+                                                                                                                                        ~~~~~~~~~~^^^^^^
+KeyError: '5ecd25a505f7f90868dd83ed'
+2025-11-18 18:46:10,068 - INFO - C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py changed, reloading.
+2025-11-18 18:46:16,449 - ERROR - Internal Server Error: /api/get_info
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py", line 237, in get_info
+    zd["code"]=200;zd["message"]="";zd["data"]=transform_format(get_relationship()["data"])
+                                                                ~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py", line 208, in get_relationship
+    zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][server_zd[i[3]][0]]={"type":"network","asset_status":dict_detail.get(network_zd[i[3]][1],None)}
+                                                                                                                                        ~~~~~~~~~~^^^^^^
+KeyError: '5ecd25a505f7f90868dd83ed'
+2025-11-18 18:54:12,607 - ERROR - Internal Server Error: /api/get_info
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py", line 237, in get_info
+    zd["code"]=200;zd["message"]="";zd["data"]=transform_format(get_relationship()["data"])
+                                                                ~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py", line 208, in get_relationship
+    zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][server_zd[i[3]][0]]={"type":"network","asset_status":dict_detail.get(network_zd[i[3]][1],None)}
+                                                                                                                                        ~~~~~~~~~~^^^^^^
+KeyError: '5ecd25a505f7f90868dd83ed'
+2025-11-18 18:54:43,096 - ERROR - Internal Server Error: /api/get_info
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py", line 237, in get_info
+    zd["code"]=200;zd["message"]="";zd["data"]=transform_format(get_relationship()["data"])
+                                                                ~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py", line 208, in get_relationship
+    zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][server_zd[i[3]][0]]={"type":"network","asset_status":dict_detail.get(network_zd[i[3]][1],None)}
+                                                                                                                                        ~~~~~~~~~~^^^^^^
+KeyError: '5ecd25a505f7f90868dd83ed'
+2025-11-18 19:01:16,833 - ERROR - Internal Server Error: /api/get_info
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py", line 236, in get_info
+    zd["code"]=200;zd["message"]="";zd["data"]=transform_format(get_relationship()["data"])
+                                                                ~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py", line 207, in get_relationship
+    zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][server_zd[i[3]][0]]={"type":"network","asset_status":dict_detail.get(network_zd[i[3]][1],None)}
+                                                                                                                                        ~~~~~~~~~~^^^^^^
+KeyError: '5ecd25a505f7f90868dd83ed'
+2025-11-18 19:02:26,840 - ERROR - Internal Server Error: /api/get_info
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py", line 236, in get_info
+    zd["code"]=200;zd["message"]="";zd["data"]=transform_format(get_relationship()["data"])
+                                                                ~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py", line 207, in get_relationship
+    zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][server_zd[i[3]][0]]={"type":"network","asset_status":dict_detail.get(network_zd[i[3]][1],None)}
+                                                                                                                                        ~~~~~~~~~~^^^^^^
+KeyError: '5ecd25a505f7f90868dd83ed'
+2025-11-18 19:09:25,329 - INFO - C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py changed, reloading.
+2025-11-18 19:11:42,390 - INFO - C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py changed, reloading.
+2025-11-18 19:14:46,554 - INFO - C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py changed, reloading.
+2025-11-18 19:16:35,044 - INFO - C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py changed, reloading.
+2025-11-18 19:18:30,426 - ERROR - Internal Server Error: /api/get_info
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py", line 236, in get_info
+    zd["code"]=200;zd["message"]="";zd["data"]=transform_format(get_relationship()["data"],0)
+                                               ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py", line 228, in transform_format
+    lt.append({"name":i,"children":transform_format(zd[i])})
+                                   ~~~~~~~~~~~~~~~~^^^^^^^
+TypeError: transform_format() missing 1 required positional argument: 'iter_'
+2025-11-18 19:18:40,802 - INFO - C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py changed, reloading.
+2025-11-18 19:32:50,432 - ERROR - Internal Server Error: /api/get_info
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py", line 237, in get_info
+    zd["code"]=200;zd["message"]="";zd["data"]=transform_format(get_relationship()["data"],0)
+                                                                ~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py", line 134, in get_relationship
+    rack_zd=dict(zip(rack["_id"].values.tolist(),[i[0]+"|"+i[1] for i in rack[["rack_name","code"]].values.tolist()]))
+                                                                         ~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\pandas\core\frame.py", line 4119, in __getitem__
+    indexer = self.columns._get_indexer_strict(key, "columns")[1]
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\pandas\core\indexes\base.py", line 6212, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\pandas\core\indexes\base.py", line 6264, in _raise_if_missing
+    raise KeyError(f"{not_found} not in index")
+KeyError: "['code'] not in index"
+2025-11-18 19:35:10,703 - INFO - C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py changed, reloading.
+2025-11-18 19:35:32,574 - ERROR - Internal Server Error: /api/get_info
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\pandas\core\indexes\base.py", line 3812, in get_loc
+    return self._engine.get_loc(casted_key)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "pandas/_libs/index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7096, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'code'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\django\views\generic\base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py", line 237, in get_info
+    zd["code"]=200;zd["message"]="";zd["data"]=transform_format(get_relationship()["data"],0)
+                                                                ~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py", line 134, in get_relationship
+    rack_zd=dict(zip(rack["_id"].values.tolist(),rack["code"].values.tolist()))
+                                                 ~~~~^^^^^^^^
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\pandas\core\frame.py", line 4113, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "C:\Users\Administrator\Desktop\工作\信息采集没问题了\venv\Lib\site-packages\pandas\core\indexes\base.py", line 3819, in get_loc
+    raise KeyError(key) from err
+KeyError: 'code'
+2025-11-18 19:35:47,423 - INFO - C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py changed, reloading.
+2025-11-18 19:37:34,623 - INFO - C:\Users\Administrator\Desktop\工作\信息采集没问题了\basic\project1\views.py changed, reloading.

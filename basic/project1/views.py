@@ -22,7 +22,7 @@ import atexit
 from pymongo import MongoClient
 import time
 import pandas as pd
-    
+
 class Connect_Mongodb:
 
     def __init__(self):
@@ -38,18 +38,18 @@ class Connect_Mongodb:
                 "PASSWORD":"cds-cloud@2017"
             }
         }
-        # self.config={
-        #     "connection":{
-        #         "TIMES":1000,
-        #         "TIME":0.1
-        #     },
-        #     "mongodb":{
-        #         "HOST":"localhost",
-        #         "PORT":4000,
-        #         "USERNAME":"manager",
-        #         "PASSWORD":"cds-cloud@2017"
-        #     }
-        # }
+        self.config={
+            "connection":{
+                "TIMES":1000,
+                "TIME":0.1
+            },
+            "mongodb":{
+                "HOST":"localhost",
+                "PORT":4000,
+                "USERNAME":"manager",
+                "PASSWORD":"cds-cloud@2017"
+            }
+        }
         self.client=self.login()
         self.db=self.get_database()
         atexit.register(self.close)
@@ -64,7 +64,7 @@ class Connect_Mongodb:
                 time.sleep(self.config["connection"]["TIME"])
         logging.error("mongodb登录失败。")
         raise Exception("mongodb登录失败。")
-    
+
     def get_database(self):
         for i in range(self.config["connection"]["TIMES"]):
             try:
@@ -73,7 +73,7 @@ class Connect_Mongodb:
                 time.sleep(self.config["connection"]["TIME"])
         logging.error("cds_cmdb获取失败。")
         raise Exception("cds_cmdb获取失败。")
-    
+
     def close(self):
         for i in range(self.config["connection"]["TIMES"]):
             try:
@@ -101,16 +101,25 @@ from rest_framework.response import Response
 def test(request):
     return Response("Hello world")
 
+def tool1(s):
+    if "\'" in s:
+        s=s[s.index("\'")+1:]
+    if "\'" in s:
+        s=s[:s.index("\'")]
+    return s
+
 from bson import ObjectId
 
 def get_relationship():
     zd={}
     zd["code"]=200;zd["message"]="";zd["data"]={}
     db_mongo=Connect_Mongodb()
-    data_center=db_mongo.get_collection("cds_ci_att_value_data_center",{"status":1,"data_center_status":{"$ne":ObjectId("60f66712e61a21f5aafd564a")}},{"_id":1,"data_center_name":1})
-    data_center_zd=dict(zip(data_center["_id"].values.tolist(),data_center["data_center_name"].values.tolist()))
-    room=db_mongo.get_collection("cds_ci_att_value_room",{"status":1},{"_id":1,"room_name":1})
-    room_zd=dict(zip(room["_id"].values.tolist(),room["room_name"].values.tolist()))
+    dict_detail=db_mongo.get_collection("cds_dict_detail",{"status":1},{"_id":1,"field_name":1})
+    dict_detail=dict(zip(dict_detail["_id"].values.tolist(),dict_detail["field_name"].values.tolist()))
+    data_center=db_mongo.get_collection("cds_ci_att_value_data_center",{"status":1,"data_center_status":{"$ne":ObjectId("60f66712e61a21f5aafd564a")}},{"_id":1,"data_center_name":1,"code":1})
+    data_center_zd=dict(zip(data_center["_id"].values.tolist(),[i[0]+"|"+i[1] for i in data_center[["data_center_name","code"]].values.tolist()]))
+    room=db_mongo.get_collection("cds_ci_att_value_room",{"status":1},{"_id":1,"room_name":1,"code":1})
+    room_zd=dict(zip(room["_id"].values.tolist(),[i[0]+"|"+i[1] for i in room[["room_name","code"]].values.tolist()]))
     relationship=db_mongo.get_collection("cds_ci_location_detail",{"status":1,"ci_name":"room"},{"data_center_id":1,"room_id":1})[["data_center_id","room_id"]].values.tolist()
     for i in relationship:
         if not data_center_zd.get(i[0],None):
@@ -162,12 +171,13 @@ def get_relationship():
         {
             '$project':{
                 "_id":1,
-                "hostname":1
+                "hostname":1,
+                "asset_status":1
             }
         }
     ]
     network=pd.DataFrame(list(db_mongo.db.cds_ci_att_value_network.aggregate(pipeline))).astype(str)
-    network_zd=dict(zip(network["_id"].values.tolist(),network["hostname"].values.tolist()))
+    network_zd=dict(zip(network["_id"].values.tolist(),network[["hostname","asset_status"]].values.tolist()))
     relationship=db_mongo.get_collection("cds_ci_location_detail",{"status":1,"ci_name":"network"},{"data_center_id":1,"room_id":1,"rack_id":1,"device_id":1})[["data_center_id","room_id","rack_id","device_id"]].values.tolist()
     for i in relationship:
         if not data_center_zd.get(i[0],None):
@@ -178,10 +188,10 @@ def get_relationship():
             continue
         if not network_zd.get(i[3],None):
             continue
-        if network_zd[i[3]] not in zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]]:
-            zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][network_zd[i[3]]]={"type":"network"}
+        if network_zd[i[3]][0] not in zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]]:
+            zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][network_zd[i[3]][0]]={"type":"network","asset_status":dict_detail.get(network_zd[i[3]][1],None)}
     server=pd.DataFrame(list(db_mongo.db.cds_ci_att_value_server.aggregate(pipeline))).astype(str)
-    server_zd=dict(zip(server["_id"].values.tolist(),server["hostname"].values.tolist()))
+    server_zd=dict(zip(server["_id"].values.tolist(),server[["hostname","asset_status"]].values.tolist()))
     relationship=db_mongo.get_collection("cds_ci_location_detail",{"status":1,"ci_name":"server"},{"data_center_id":1,"room_id":1,"rack_id":1,"device_id":1})[["data_center_id","room_id","rack_id","device_id"]].values.tolist()
     for i in relationship:
         if not data_center_zd.get(i[0],None):
@@ -192,10 +202,10 @@ def get_relationship():
             continue
         if not server_zd.get(i[3],None):
             continue
-        if server_zd[i[3]] not in zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]]:
-            zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][server_zd[i[3]]]={"type":"server"}
+        if server_zd[i[3]][0] not in zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]]:
+            zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][server_zd[i[3]][0]]={"type":"network","asset_status":dict_detail.get(server_zd[i[3]][1],None)}
     storage=pd.DataFrame(list(db_mongo.db.cds_ci_att_value_storage.aggregate(pipeline))).astype(str)
-    storage_zd=dict(zip(storage["_id"].values.tolist(),storage["hostname"].values.tolist()))
+    storage_zd=dict(zip(storage["_id"].values.tolist(),storage[["hostname","asset_status"]].values.tolist()))
     relationship=db_mongo.get_collection("cds_ci_location_detail",{"status":1,"ci_name":"storage"},{"data_center_id":1,"room_id":1,"rack_id":1,"device_id":1})[["data_center_id","room_id","rack_id","device_id"]].values.tolist()
     for i in relationship:
         if not data_center_zd.get(i[0],None):
@@ -206,21 +216,23 @@ def get_relationship():
             continue
         if not storage_zd.get(i[3],None):
             continue
-        if storage_zd[i[3]] not in zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]]:
-            zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][storage_zd[i[3]]]={"type":"storage"}
+        if storage_zd[i[3]][0] not in zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]]:
+            zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][storage_zd[i[3]][0]]={"type":"network","asset_status":dict_detail.get(storage_zd[i[3]][1],None)}
     return zd
 
-def transform_format(zd):
+def transform_format(zd,iter_):
+    iter_+=1
     lt=[]
     for i in zd:
-        if type(zd[i])==dict:
-            lt.append({"name":i,"children":transform_format(zd[i])})
+        type_={1:"data_center",2:"room",3:"rack"}.get(iter_)
+        if iter_<3:
+            lt.append({"name":i.split("|")[0],"children":transform_format(zd[i],iter_),"type":type_,"code":i.split("|")[1]})
         else:
-            lt.append({"name":i,"type":zd[i]})
+            lt.append({"name":i,"type":type_})
     return lt
 
 @api_view(['GET'])
 def get_info(request):
     zd={}
-    zd["code"]=200;zd["message"]="";zd["data"]=transform_format(get_relationship()["data"])
+    zd["code"]=200;zd["message"]="";zd["data"]=transform_format(get_relationship()["data"],0)
     return Response(zd)
