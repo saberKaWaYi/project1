@@ -134,8 +134,11 @@ def get_relationship(flag1=False,flag2=False):
             zd["data"][data_center_zd[i[0]]]={}
         if room_zd[i[1]] not in zd["data"][data_center_zd[i[0]]]:
             zd["data"][data_center_zd[i[0]]][room_zd[i[1]]]={}
-    rack=db_mongo.get_collection("cds_ci_att_value_rack",{"status":1},{"_id":1,"rack_name":1})
-    rack_zd=dict(zip(rack["_id"].values.tolist(),rack["rack_name"].values.tolist()))
+    rack=db_mongo.get_collection("cds_ci_att_value_rack",{"status":1},{"_id":1,"rack_name":1,"xinxi_resource_no":1})
+    if flag1:
+        rack_zd=dict(zip(rack["_id"].values.tolist(),[i[0]+"|"+i[1] for i in rack[["rack_name","xinxi_resource_no"]].values.tolist()]))
+    else:
+        rack_zd=dict(zip(rack["_id"].values.tolist(),rack["rack_name"].values.tolist()))
     relationship=db_mongo.get_collection("cds_ci_location_detail",{"status":1,"ci_name":"rack"},{"data_center_id":1,"room_id":1,"rack_id":1})[["data_center_id","room_id","rack_id"]].values.tolist()
     for i in relationship:
         if not data_center_zd.get(i[0],None):
@@ -231,7 +234,8 @@ def get_relationship(flag1=False,flag2=False):
                     "u_size":dict_detail.get(tool1(network_zd[i[3]][7]),None),
                     "data_center":data_center_zd[i[0]],
                     "room":room_zd[i[1]],
-                    "rack":rack_zd[i[2]]
+                    "rack":rack_zd[i[2]],
+                    "type":"network"
                 }
             else:
                 zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][network_zd[i[3]][0]]={"type":"network","asset_status":dict_detail.get(tool1(network_zd[i[3]][1]),None)}
@@ -272,7 +276,8 @@ def get_relationship(flag1=False,flag2=False):
                     "u_size":dict_detail.get(tool1(server_zd[i[3]][7]),None),
                     "data_center":data_center_zd[i[0]],
                     "room":room_zd[i[1]],
-                    "rack":rack_zd[i[2]]
+                    "rack":rack_zd[i[2]],
+                    "type":"server"
                 }
             else:
                 zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][server_zd[i[3]][0]]={"type":"network","asset_status":dict_detail.get(tool1(server_zd[i[3]][1]),None)}
@@ -313,7 +318,8 @@ def get_relationship(flag1=False,flag2=False):
                     "u_size":dict_detail.get(tool1(storage_zd[i[3]][7]),None),
                     "data_center":data_center_zd[i[0]],
                     "room":room_zd[i[1]],
-                    "rack":rack_zd[i[2]]
+                    "rack":rack_zd[i[2]],
+                    "type":"storage"
                 }
             else:
                 zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][storage_zd[i[3]][0]]={"type":"network","asset_status":dict_detail.get(tool1(storage_zd[i[3]][1]),None)}
@@ -327,7 +333,7 @@ def transform_format(zd,iter_):
         if iter_<3:
             lt.append({"name":i.split("|")[0],"children":transform_format(zd[i],iter_),"type":type_,"code":i.split("|")[1]})
         else:
-            lt.append({"name":i,"type":type_})
+            lt.append({"name":i.split("|")[0],"type":type_,"code":i.split("|")[1]})
     return lt
 
 @api_view(['GET'])
