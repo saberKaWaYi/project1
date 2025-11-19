@@ -110,7 +110,7 @@ def tool1(s):
 
 from bson import ObjectId
 
-def get_relationship(flag=False):
+def get_relationship(flag1=False,flag2=False):
     zd={}
     zd["code"]=200;zd["message"]="";zd["data"]={}
     db_mongo=Connect_Mongodb()
@@ -118,7 +118,7 @@ def get_relationship(flag=False):
     dict_detail=dict(zip(dict_detail["_id"].values.tolist(),dict_detail["field_name"].values.tolist()))
     data_center=db_mongo.get_collection("cds_ci_att_value_data_center",{"status":1,"data_center_status":{"$ne":ObjectId("60f66712e61a21f5aafd564a")}},{"_id":1,"data_center_name":1,"code":1})
     room=db_mongo.get_collection("cds_ci_att_value_room",{"status":1},{"_id":1,"room_name":1,"code":1})
-    if flag:
+    if flag1:
         data_center_zd=dict(zip(data_center["_id"].values.tolist(),[i[0]+"|"+i[1] for i in data_center[["data_center_name","code"]].values.tolist()]))
         room_zd=dict(zip(room["_id"].values.tolist(),[i[0]+"|"+i[1] for i in room[["room_name","code"]].values.tolist()]))
     else:
@@ -180,8 +180,25 @@ def get_relationship(flag=False):
             }
         }
     ]
+    if flag2:
+        pipeline[-1]={
+            '$project':{
+                "_id":1,
+                "hostname":1,
+                "sn_code":1,
+                "asset_status":1,
+                "device_ip":1,
+                "u_begin":1,
+                "u_height":1,
+                "u_front_back":1,
+                "u_size":1
+            }
+        }
     network=pd.DataFrame(list(db_mongo.db.cds_ci_att_value_network.aggregate(pipeline))).astype(str)
-    network_zd=dict(zip(network["_id"].values.tolist(),network[["hostname","asset_status"]].values.tolist()))
+    if flag2:
+        network_zd=dict(zip(network["_id"].values.tolist(),network[["hostname","sn_code","asset_status","device_ip","u_begin","u_height","u_front_back","u_size"]].values.tolist()))
+    else:
+        network_zd=dict(zip(network["_id"].values.tolist(),network[["hostname","asset_status"]].values.tolist()))
     relationship=db_mongo.get_collection("cds_ci_location_detail",{"status":1,"ci_name":"network"},{"data_center_id":1,"room_id":1,"rack_id":1,"device_id":1})[["data_center_id","room_id","rack_id","device_id"]].values.tolist()
     for i in relationship:
         if not data_center_zd.get(i[0],None):
@@ -193,9 +210,36 @@ def get_relationship(flag=False):
         if not network_zd.get(i[3],None):
             continue
         if network_zd[i[3]][0] not in zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]]:
-            zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][network_zd[i[3]][0]]={"type":"network","asset_status":dict_detail.get(tool1(network_zd[i[3]][1]),None)}
+            if flag2:
+                u_begin,u_height="",""
+                try:
+                    u_begin=str(int(network_zd[i[3]][4]))
+                except:
+                    pass
+                try:
+                    u_height=str(int(network_zd[i[3]][5]))
+                except:
+                    pass
+                zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][network_zd[i[3]][0]]={
+                    "hostname":network_zd[i[3]][0],
+                    "sn_code":network_zd[i[3]][1],
+                    "asset_status":dict_detail.get(tool1(network_zd[i[3]][2]),None),
+                    "ip":network_zd[i[3]][3] if "." in network_zd[i[3]][3] else "",
+                    "u_begin":u_begin,
+                    "u_height":u_height,
+                    "u_front_back":dict_detail.get(tool1(network_zd[i[3]][6]),None),
+                    "u_size":dict_detail.get(tool1(network_zd[i[3]][7]),None),
+                    "data_center":data_center_zd[i[0]],
+                    "room":room_zd[i[1]],
+                    "rack":rack_zd[i[2]]
+                }
+            else:
+                zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][network_zd[i[3]][0]]={"type":"network","asset_status":dict_detail.get(tool1(network_zd[i[3]][1]),None)}
     server=pd.DataFrame(list(db_mongo.db.cds_ci_att_value_server.aggregate(pipeline))).astype(str)
-    server_zd=dict(zip(server["_id"].values.tolist(),server[["hostname","asset_status"]].values.tolist()))
+    if flag2:
+        server_zd=dict(zip(server["_id"].values.tolist(),server[["hostname","sn_code","asset_status","device_ip","u_begin","u_height","u_front_back","u_size"]].values.tolist()))
+    else:
+        server_zd=dict(zip(server["_id"].values.tolist(),server[["hostname","asset_status"]].values.tolist()))
     relationship=db_mongo.get_collection("cds_ci_location_detail",{"status":1,"ci_name":"server"},{"data_center_id":1,"room_id":1,"rack_id":1,"device_id":1})[["data_center_id","room_id","rack_id","device_id"]].values.tolist()
     for i in relationship:
         if not data_center_zd.get(i[0],None):
@@ -207,9 +251,36 @@ def get_relationship(flag=False):
         if not server_zd.get(i[3],None):
             continue
         if server_zd[i[3]][0] not in zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]]:
-            zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][server_zd[i[3]][0]]={"type":"network","asset_status":dict_detail.get(tool1(server_zd[i[3]][1]),None)}
+            if flag2:
+                u_begin,u_height="",""
+                try:
+                    u_begin=str(int(server_zd[i[3]][4]))
+                except:
+                    pass
+                try:
+                    u_height=str(int(server_zd[i[3]][5]))
+                except:
+                    pass
+                zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][server_zd[i[3]][0]]={
+                    "hostname":server_zd[i[3]][0],
+                    "sn_code":server_zd[i[3]][1],
+                    "asset_status":dict_detail.get(tool1(server_zd[i[3]][2]),None),
+                    "ip":server_zd[i[3]][3] if "." in server_zd[i[3]][3] else "",
+                    "u_begin":u_begin,
+                    "u_height":u_height,
+                    "u_front_back":dict_detail.get(tool1(server_zd[i[3]][6]),None),
+                    "u_size":dict_detail.get(tool1(server_zd[i[3]][7]),None),
+                    "data_center":data_center_zd[i[0]],
+                    "room":room_zd[i[1]],
+                    "rack":rack_zd[i[2]]
+                }
+            else:
+                zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][server_zd[i[3]][0]]={"type":"network","asset_status":dict_detail.get(tool1(server_zd[i[3]][1]),None)}
     storage=pd.DataFrame(list(db_mongo.db.cds_ci_att_value_storage.aggregate(pipeline))).astype(str)
-    storage_zd=dict(zip(storage["_id"].values.tolist(),storage[["hostname","asset_status"]].values.tolist()))
+    if flag2:
+        storage_zd=dict(zip(storage["_id"].values.tolist(),storage[["hostname","sn_code","asset_status","device_ip","u_begin","u_height","u_front_back","u_size"]].values.tolist()))
+    else:
+        storage_zd=dict(zip(storage["_id"].values.tolist(),storage[["hostname","asset_status"]].values.tolist()))
     relationship=db_mongo.get_collection("cds_ci_location_detail",{"status":1,"ci_name":"storage"},{"data_center_id":1,"room_id":1,"rack_id":1,"device_id":1})[["data_center_id","room_id","rack_id","device_id"]].values.tolist()
     for i in relationship:
         if not data_center_zd.get(i[0],None):
@@ -221,7 +292,31 @@ def get_relationship(flag=False):
         if not storage_zd.get(i[3],None):
             continue
         if storage_zd[i[3]][0] not in zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]]:
-            zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][storage_zd[i[3]][0]]={"type":"network","asset_status":dict_detail.get(tool1(storage_zd[i[3]][1]),None)}
+            if flag2:
+                u_begin,u_height="",""
+                try:
+                    u_begin=str(int(storage_zd[i[3]][4]))
+                except:
+                    pass
+                try:
+                    u_height=str(int(storage_zd[i[3]][5]))
+                except:
+                    pass
+                zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][storage_zd[i[3]][0]]={
+                    "hostname":storage_zd[i[3]][0],
+                    "sn_code":storage_zd[i[3]][1],
+                    "asset_status":dict_detail.get(tool1(storage_zd[i[3]][2]),None),
+                    "ip":storage_zd[i[3]][3] if "." in storage_zd[i[3]][3] else "",
+                    "u_begin":u_begin,
+                    "u_height":u_height,
+                    "u_front_back":dict_detail.get(tool1(storage_zd[i[3]][6]),None),
+                    "u_size":dict_detail.get(tool1(storage_zd[i[3]][7]),None),
+                    "data_center":data_center_zd[i[0]],
+                    "room":room_zd[i[1]],
+                    "rack":rack_zd[i[2]]
+                }
+            else:
+                zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][storage_zd[i[3]][0]]={"type":"network","asset_status":dict_detail.get(tool1(storage_zd[i[3]][1]),None)}
     return zd
 
 def transform_format(zd,iter_):
@@ -238,7 +333,7 @@ def transform_format(zd,iter_):
 @api_view(['GET'])
 def get_info(request):
     zd={}
-    zd["code"]=200;zd["message"]="";zd["data"]=transform_format(get_relationship(True)["data"],0)
+    zd["code"]=200;zd["message"]="";zd["data"]=transform_format(get_relationship(flag1=True)["data"],0)
     return Response(zd)
 
 def calculate(data,iter_):
@@ -307,3 +402,26 @@ def get_info_detail(request):
     zd["data"]["device_number"]=x[0]+x[1]+x[2]
     zd["data"]["status"]=0 if x[0]+x[1]==0 else 1
     return Response(zd)
+
+@api_view(['POST'])
+def search(request):
+    info=get_relationship(flag2=True)["data"]
+    zd={}
+    zd["code"]=200;zd["message"]="";zd["data"]=[]
+    condition=request.data
+    def check(property_):
+        for i in condition:
+            if condition[i].lower() not in property_[i].lower():
+                return False
+        return True
+    def find(info_temp,iter_):
+        iter_-=1
+        for i in info_temp:
+            if iter_==0:
+                print(info_temp[i])
+                if check(info_temp[i]):
+                    zd["data"].append(info_temp[i])
+            else:
+                find(info_temp[i],iter_)
+    find(info,4)
+    return Response(info)
