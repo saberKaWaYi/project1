@@ -193,7 +193,7 @@ def get_relationship(flag=False):
         if not network_zd.get(i[3],None):
             continue
         if network_zd[i[3]][0] not in zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]]:
-            zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][network_zd[i[3]][0]]={"type":"network","asset_status":dict_detail.get(network_zd[i[3]][1],None)}
+            zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][network_zd[i[3]][0]]={"type":"network","asset_status":dict_detail.get(tool1(network_zd[i[3]][1]),None)}
     server=pd.DataFrame(list(db_mongo.db.cds_ci_att_value_server.aggregate(pipeline))).astype(str)
     server_zd=dict(zip(server["_id"].values.tolist(),server[["hostname","asset_status"]].values.tolist()))
     relationship=db_mongo.get_collection("cds_ci_location_detail",{"status":1,"ci_name":"server"},{"data_center_id":1,"room_id":1,"rack_id":1,"device_id":1})[["data_center_id","room_id","rack_id","device_id"]].values.tolist()
@@ -207,7 +207,7 @@ def get_relationship(flag=False):
         if not server_zd.get(i[3],None):
             continue
         if server_zd[i[3]][0] not in zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]]:
-            zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][server_zd[i[3]][0]]={"type":"network","asset_status":dict_detail.get(server_zd[i[3]][1],None)}
+            zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][server_zd[i[3]][0]]={"type":"network","asset_status":dict_detail.get(tool1(server_zd[i[3]][1]),None)}
     storage=pd.DataFrame(list(db_mongo.db.cds_ci_att_value_storage.aggregate(pipeline))).astype(str)
     storage_zd=dict(zip(storage["_id"].values.tolist(),storage[["hostname","asset_status"]].values.tolist()))
     relationship=db_mongo.get_collection("cds_ci_location_detail",{"status":1,"ci_name":"storage"},{"data_center_id":1,"room_id":1,"rack_id":1,"device_id":1})[["data_center_id","room_id","rack_id","device_id"]].values.tolist()
@@ -221,7 +221,7 @@ def get_relationship(flag=False):
         if not storage_zd.get(i[3],None):
             continue
         if storage_zd[i[3]][0] not in zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]]:
-            zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][storage_zd[i[3]][0]]={"type":"network","asset_status":dict_detail.get(storage_zd[i[3]][1],None)}
+            zd["data"][data_center_zd[i[0]]][room_zd[i[1]]][rack_zd[i[2]]][storage_zd[i[3]][0]]={"type":"network","asset_status":dict_detail.get(tool1(storage_zd[i[3]][1]),None)}
     return zd
 
 def transform_format(zd,iter_):
@@ -239,4 +239,71 @@ def transform_format(zd,iter_):
 def get_info(request):
     zd={}
     zd["code"]=200;zd["message"]="";zd["data"]=transform_format(get_relationship(True)["data"],0)
+    return Response(zd)
+
+def calculate(data,iter_):
+    a,b,c=0,0,0
+    iter_-=1
+    for i in data:
+        if iter_==0:
+            if data[i]["asset_status"]=="在线":
+                a+=1
+            elif data[i]["asset_status"]=="预上线":
+                b+=1
+            else:
+                c+=1
+        else:
+            x=calculate(data[i],iter_)
+            a+=x[0];b+=x[1];c+=x[2]
+    return (a,b,c)
+
+@api_view(['POST'])
+def get_info_detail(request):
+    info=get_relationship()["data"]
+    json_=request.data
+    zd={}
+    zd["code"]=200;zd["message"]="";zd["data"]={}
+    if json_.get("rack"):
+        data=info[json_["data_center"]][json_["room"]][json_["rack"]]
+        x=calculate(data,1)
+    elif json_.get("room"):
+        data=info[json_["data_center"]][json_["room"]]
+        x=calculate(data,2)
+        rack_used,rack_unused=0,0
+        for i in data:
+            temp=calculate(data[i],1)
+            if temp[0]+temp[1]==0:
+                rack_unused+=1
+            else:
+                rack_used+=1
+        zd["data"]["rack_used"]=rack_used
+        zd["data"]["rack_unused"]=rack_unused
+        zd["data"]["rack_number"]=rack_used+rack_unused
+    else:
+        data=info[json_["data_center"]]
+        x=calculate(data,3)
+        room_used,room_unused=0,0;rack_used,rack_unused=0,0
+        for i in data:
+            temp=calculate(data[i],2)
+            if temp[0]+temp[1]==0:
+                room_unused+=1
+            else:
+                room_used+=1
+            for j in data[i]:
+                temp=calculate(data[i][j],1)
+                if temp[0]+temp[1]==0:
+                    rack_unused+=1
+                else:
+                    rack_used+=1
+        zd["data"]["room_used"]=room_used
+        zd["data"]["room_unused"]=room_unused
+        zd["data"]["room_number"]=room_used+room_unused
+        zd["data"]["rack_used"]=rack_used
+        zd["data"]["rack_unused"]=rack_unused
+        zd["data"]["rack_number"]=rack_used+rack_unused
+    zd["data"]["device_on_number"]=x[0]
+    zd["data"]["device_pre_on_number"]=x[1]
+    zd["data"]["device_off_number"]=x[2]
+    zd["data"]["device_number"]=x[0]+x[1]+x[2]
+    zd["data"]["status"]=0 if x[0]+x[1]==0 else 1
     return Response(zd)
